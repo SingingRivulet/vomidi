@@ -3,6 +3,7 @@
 
 //lib:soundTouch
 #include "WavFile.h"
+#include "debug.h"
 #include <SoundTouch.h>
 #include <BPMDetect.h>
 #include <STTypes.h>

@@ -11,24 +11,28 @@ namespace vomidi{
                 std::string note,
                             word;
                 double      tempo,
-                            second;
+                            second,
+                            vol;
                 inline syllable(){
                     note.clear();
                     word.clear();
                     tempo=0;
                     second=0;
+                    vol=1;
                 }
                 inline syllable(const syllable & s){
                     note=s.note;
                     word=s.word;
                     tempo=s.tempo;
                     second=s.second;
+                    vol=s.vol;
                 }
                 inline const syllable & operator=(const syllable & s){
                     note=s.note;
                     word=s.word;
                     tempo=s.tempo;
                     second=s.second;
+                    vol=s.vol;
                     return *this;
                 }
             };

@@ -16,7 +16,7 @@ bool parser::save(const char * path){
     auto fp=fopen(path , "r");
     if(fp==NULL)
         return false;
-    
+    VOMIDIDebug("%s" , path);
     fprintf(fp , "@setKTone %lf\n" , this->kTone);
     
     double secondSum=0;
@@ -41,7 +41,7 @@ bool parser::load(const char * path){
     auto fp=fopen(path , "r");
     if(fp==NULL)
         return false;
-    
+    VOMIDIDebug("%s" , path);
     while(!feof(fp)){
         bzero(bufs , sizeof(bufs));
         fgets(bufs , sizeof(bufs) , fp);
@@ -61,6 +61,7 @@ bool parser::load(const char * path){
             syllable s;
             iss>>s.note;
             iss>>s.word;
+            iss>>s.vol;
             iss>>s.tempo;
             iss>>s.second;
             this->track.push_back(s);
@@ -83,6 +84,7 @@ bool parser::exportSynth(synth * s){
         s->write(
             it.note,
             it.word,
+            it.vol,
             it.second,
             it.tempo
         );

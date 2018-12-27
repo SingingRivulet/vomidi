@@ -12,7 +12,7 @@ int main(int argc , const char ** argv){
     if(ps.load(argv[2])){
         ps.exportSynth(&syn);
     }else{
-        printf("load notation fail\n");
+        VOMIDIDebug("load notation fail:%s",argv[2]);
     }
     return 0;
 }

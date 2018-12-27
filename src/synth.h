@@ -19,8 +19,8 @@ namespace vomidi{
             synth(const char * path , soundfont * f , int nb);
             ~synth();
             int note2num(const std::string & note);
-            bool write(int midinote , soundword * word , double time , double tempo);
-            bool write(const std::string & midinote , const std::string & word , double time , double tempo);
+            bool write(int midinote , soundword * word , double vol , double time , double tempo);
+            bool write(const std::string & midinote , const std::string & word , double vol , double time , double tempo);
             bool writeEmpty(int num);
         public:
             //inline functions

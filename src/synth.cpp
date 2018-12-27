@@ -31,6 +31,7 @@ void synth::buildToneMap(){
             this->tonemap[buf]=i*12+j-82;
          }
     }
+    VOMIDIDebug("ok");
 }
 
 int synth::note2num(const std::string & note){
@@ -41,17 +42,17 @@ int synth::note2num(const std::string & note){
         return it->second;
 }
 
-bool synth::write(const std::string & midinote , const std::string & word , double time , double tempo){
+bool synth::write(const std::string & midinote , const std::string & word , double vol , double time , double tempo){
     if(midinote=="0" || midinote.empty() || word.empty())
-        return this->write(0 , NULL , time , tempo);
+        return this->write(0 , NULL , time , 0 , tempo);
     
     int nid=this->note2num(midinote);
     auto wd=this->sf->seek(word);
     
     if(wd==NULL)
-        return this->write(0 , NULL , time , tempo);
+        return this->write(0 , NULL , time , 0 , tempo);
     
-    return this->write(nid , wd , time , tempo);
+    return this->write(nid , wd , vol , time , tempo);
 }
 
 bool synth::writeEmpty(int num){
@@ -76,11 +77,15 @@ bool synth::writeEmpty(int num){
         }
     }
 }
-
-bool synth::write(int tone , soundword * word , double time , double tempo){
+static inline void setVol(soundtouch::SAMPLETYPE * data , int len , double vol){
+    for(int i=0;i<len;i++){
+        data[i]*=vol;
+    }
+}
+bool synth::write(int tone , soundword * word ,double vol, double time , double tempo){
     int sum=this->getLenFromTime(this->rate , time);
     
-    if(tone<=0 || word==NULL){
+    if(tone<=0 || word==NULL || vol==0){
     
         return this->writeEmpty(sum);
     
@@ -120,9 +125,11 @@ bool synth::write(int tone , soundword * word , double time , double tempo){
                 if(nSamples <= 0)
                     break;
                 if(sum>nSamples){
+                    setVol(sampleBuffer, nSamples * nChannels , vol);
                     this->onWrite(sampleBuffer, nSamples * nChannels);
                     sum-=nSamples;
                 }else{
+                    setVol(sampleBuffer, sum * nChannels , vol);
                     this->onWrite(sampleBuffer, sum * nChannels);
                     goto loopend;
                 }
@@ -135,6 +142,7 @@ bool synth::write(int tone , soundword * word , double time , double tempo){
 }
 
 void synth::outputInit(const char * path){
+    VOMIDIDebug("path:%s rate:%d numBits:%d channels:%d" , path , this->rate , this->numBits , this->channel);
     this->wavout=new WavOutFile(path,this->rate,this->numBits,this->channel);
 }
 
@@ -146,6 +154,7 @@ void synth::onWrite(const soundtouch::SAMPLETYPE *sampleBuffer , int len){
 void synth::outputClose(){
     if(this->wavout)
         delete this->wavout;
+    VOMIDIDebug("ok");
 }
 
 }//namespace vomidi

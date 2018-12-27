@@ -23,11 +23,15 @@ soundfont::soundfont(const char * path){
     
     this->rate=0;
     this->channel=0;
+    this->fonts.clear();
     
     snprintf(bufs , sizeof(bufs) , "%s/config" , path);
+    VOMIDIDebug("load soundfonts:%s" , path);
     FILE * fp=fopen(bufs , "r");
-    if(fp==NULL)
+    if(fp==NULL){
+        VOMIDIDebug("can't open configure file:%s" , bufs);
         return;
+    }
     std::string s1,s2;
     while(!feof(fp)){
         fgets(bufs , sizeof(bufs) , fp);
@@ -59,12 +63,13 @@ soundfont::soundfont(const char * path){
                 //name has been existed
                 continue;
             }else{
-                snprintf(bufs , sizeof(bufs) , "%s/%S" , path , s2.c_str());
+                snprintf(bufs , sizeof(bufs) , "%s/%s" , path , s2.c_str());
                 auto wp=new soundword(bufs);
                 
                 if(wp->wavin==NULL){
                     //object isn't useable
                     delete wp;
+                    VOMIDIDebug("load soundfont fail:%s" , bufs);
                     continue;
                 }
                 
@@ -75,6 +80,7 @@ soundfont::soundfont(const char * path){
                 }else{
                     if(this->rate!=nrate){
                         delete wp;
+                        VOMIDIDebug("soundfont sample rate error:%s system rate:%d soundfont rate:%d" , bufs , this->rate , nrate);
                         continue;
                     }
                 }
@@ -86,6 +92,7 @@ soundfont::soundfont(const char * path){
                 }else{
                     if(this->channel!=nchannel){
                         delete wp;
+                        VOMIDIDebug("numChannels error:%s system num:%d soundfont num:%d" , bufs , this->channel , nchannel);
                         continue;
                     }
                 }
@@ -98,6 +105,7 @@ soundfont::soundfont(const char * path){
         }
     }
     fclose(fp);
+    VOMIDIDebug("load soundfonts num:%d" , this->fonts.size());
 }
 
 soundfont::~soundfont(){

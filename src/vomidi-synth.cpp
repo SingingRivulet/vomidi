@@ -1,3 +1,10 @@
+//
+// Programmer:    cgoxopx <cgoxopx@qq.com>
+// Creation Date: 2018.12.2
+// Last Modified: 2018.12.2
+// Filename:      vomidi/src/vomidi-synth.cpp
+// Website:       http://vo.midilib.com
+// Syntax:        C++11
 #include "parser.h"
 #include <stdio.h>
 

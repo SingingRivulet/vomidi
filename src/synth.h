@@ -3,7 +3,7 @@
 // Creation Date: 2018.12.2
 // Last Modified: 2018.12.2
 // Filename:      vomidi/src/synth.h
-// Website:       http://midilib.com
+// Website:       http://vo.midilib.com
 // Syntax:        C++11
 #ifndef VOMIDI_synth
 #define VOMIDI_synth

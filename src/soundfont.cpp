@@ -1,3 +1,10 @@
+//
+// Programmer:    cgoxopx <cgoxopx@qq.com>
+// Creation Date: 2018.12.2
+// Last Modified: 2018.12.2
+// Filename:      vomidi/src/soundfont.cpp
+// Website:       http://vo.midilib.com
+// Syntax:        C++11
 #include "soundfont.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,6 +12,7 @@
 namespace vomidi{
 
 soundword::soundword(const char * path){
+    this->kTone=0;
     try{
         this->wavin = new WavInFile(path);
     }catch(...){
@@ -35,7 +43,7 @@ soundfont::soundfont(const char * path){
     std::string s1,s2;
     while(!feof(fp)){
         fgets(bufs , sizeof(bufs) , fp);
-        if(bufs[0]=='\0')
+        if(bufs[0]=='\0' || bufs[0]=='#')
             continue;
         
         if(bufs[0]=='@'){

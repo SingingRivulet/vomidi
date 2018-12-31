@@ -43,7 +43,7 @@ int synth::note2num(const std::string & note){
 }
 
 bool synth::write(const std::string & midinote , const std::string & word , double vol , double time , double tempo){
-    if(midinote=="0" || midinote.empty() || word.empty())
+    if(midinote=="0" || midinote.empty() || word.empty() || vol==0)
         return this->write(0 , NULL , time , 0 , tempo);
     
     int nid=this->note2num(midinote);

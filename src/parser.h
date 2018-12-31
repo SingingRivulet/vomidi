@@ -1,3 +1,10 @@
+//
+// Programmer:    cgoxopx <cgoxopx@qq.com>
+// Creation Date: 2018.12.2
+// Last Modified: 2018.12.2
+// Filename:      vomidi/src/parser.h
+// Website:       http://vo.midilib.com
+// Syntax:        C++11
 #ifndef VOMIDI_parser
 #define VOMIDI_parser
 #include "synth.h"
@@ -41,7 +48,6 @@ namespace vomidi{
             parser();
             ~parser();
             bool load(const char * path);
-            bool loadMidi(const char * path);
             bool save(const char * path);
             bool exportSynth(synth * s);
         private:

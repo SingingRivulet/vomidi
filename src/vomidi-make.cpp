@@ -157,15 +157,15 @@ class makeParser{
         
         bool mixAll(const std::string & path){
             wavMixer wm;
-            if(!wm.setOutput(path.c_str())){
-                VOMIDIDebug("setOutput fail:%s" , path.c_str());
-                return false;
-            }
             for(auto it:mixList){
                 if(!wm.add(it.first.c_str(),it.second)){
                     VOMIDIDebug("mix fail:%s" , it.first.c_str());
                     return false;
                 }
+            }
+            if(!wm.setOutput(path.c_str())){
+                VOMIDIDebug("setOutput fail:%s" , path.c_str());
+                return false;
             }
             return wm.mixAll();
         }

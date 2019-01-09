@@ -28,8 +28,12 @@ namespace vomidi{
     
     class wavMixer:public mixer{
         public:
+            int channel;
+            int rate;
             bool add(const char * path , double v);
             bool setOutput(const char * path);
+            wavMixer();
+            ~wavMixer();
     };
 }
 #endif

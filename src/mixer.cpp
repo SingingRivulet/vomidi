@@ -135,4 +135,63 @@ void mixer::writeOut(const soundtouch::SAMPLETYPE * out , int len){
         this->wavout->write(out , len);
 }
 
+wavMixer::wavMixer(){
+    this->rate=-1;
+    this->channel=-1;
+}
+
+wavMixer::~wavMixer(){
+    if(this->wavout)
+        delete this->wavout;
+    for(auto it:resource){
+        if(it.first)
+            delete it.first;
+    }
+}
+
+bool wavMixer::add(const char * path , double v){
+    try{
+        auto wp=new WavInFile(path);
+        if(wp==NULL)
+            return false;
+        
+        int nrate=wp->getSampleRate();
+        if(this->rate==-1){
+            this->rate=nrate;
+        }else
+        if(this->rate!=nrate){
+            delete wp;
+            return false;
+        }
+        
+        int nchannel=wp->getNumChannels();
+        if(this->channel==-1){
+            this->channel=nchannel;
+        }else
+        if(this->channel!=nchannel){
+            delete wp;
+            return false;
+        }
+        
+        this->resource.push_back(std::pair<WavInFile * , double>(wp , v));
+        
+        return true;
+    }catch(...){
+        return false;
+    }
+}
+
+bool wavMixer::setOutput(const char * path){
+    if(this->rate==-1)
+        return false;
+    if(this->channel==-1)
+        return false;
+    try{
+        this->wavout=new WavOutFile(path , this->rate , 16 , this->channel);
+        return true;
+    }catch(...){
+        return false;
+    }
+}
+
 }//namespace vomidi

@@ -1,7 +1,7 @@
 //
 // Programmer:    cgoxopx <cgoxopx@qq.com>
 // Creation Date: 2018.12.2
-// Last Modified: 2018.12.2
+// Last Modified: 2019.1.1
 // Filename:      vomidi/src/generator.cpp
 // Website:       http://vo.midilib.com
 // Syntax:        C++11
@@ -46,6 +46,7 @@ void generator::pushEmpty(double second){
 
 generator::generator(const char * path){
     this->fp=fopen(path , "w");
+    fprintf(fp , "#note word velocity tempo delay\n");
     this->word="null";
 }
 
